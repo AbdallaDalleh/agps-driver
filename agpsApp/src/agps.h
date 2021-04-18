@@ -75,4 +75,6 @@ typedef enum
     V_FIL_SETPOINT,
     I_HV_SETPOINT,
     V_HV_SETPOINT,
+    I_HV_STANDBY,
+    V_GUN_TRIGGER
 } register_t
