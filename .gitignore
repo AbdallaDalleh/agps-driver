@@ -3,3 +3,4 @@ dbd/
 lib/
 O.Common/
 O.linux-x86_64/
+.vscode/

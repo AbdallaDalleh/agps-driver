@@ -1,6 +1,7 @@
-#include <iostream>
+#ifndef AGPS_H
+#define AGPS_H
 
-using std::cout;
+#include <stdint.h>
 
 typedef struct
 {
@@ -15,11 +16,11 @@ typedef struct
     uint32_t data;
 } rx_packet_t;
 
-#define SYS_COMMAND         0x00
-#define READ_REGISTER       0x01
-#define WRITE_REGISTER      0x02
-#define READ_PARAMETER      0x03
-#define WRITE_PARAMETER     0x04
+#define COMMAND_SYSTEM              0x00
+#define COMMAND_READ_REGISTER       0x01
+#define COMMAND_WRITE_REGISTER      0x02
+#define COMMAND_READ_PARAMETER      0x03
+#define COMMAND_WRITE_PARAMETER     0x04
 
 #define SYS_COMMAND_OK      0x00
 #define READ_REGISTER_OK    0x01
@@ -77,4 +78,6 @@ typedef enum
     V_HV_SETPOINT,
     I_HV_STANDBY,
     V_GUN_TRIGGER
-} register_t
+} _register_t;
+
+#endif

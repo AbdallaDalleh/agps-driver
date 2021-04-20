@@ -16,7 +16,7 @@ LIBRARY_IOC += agps
 DBD += agps.dbd
 
 # specify all source files to be compiled and added to the library
-#agps_SRCS += xxx
+agps_SRCS += AGPSController.cpp
 
 agps_LIBS += $(EPICS_BASE_IOC_LIBS)
 
