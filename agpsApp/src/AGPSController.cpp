@@ -2,7 +2,7 @@
 
 #include <epicsExport.h>
 #include <asynPortDriver.h>
-#include <asynGenericPointerSyncIO.h>
+#include <asynOctetSyncIO.h>
 #include <iocsh.h>
 
 #include "agps.h"
@@ -30,7 +30,7 @@ AGPSController::AGPSController(const char* port_name, const char* name)
                     1,
                     0, 0)
 {
-    int status = pasynGenericPointerSyncIO->connect(name, 1, &asyn_user, NULL);
+    int status = pasynOctetSyncIO->connect(name, 1, &asyn_user, NULL);
     if(status != asynSuccess)
     {
         // TODO: Use asynPrint
@@ -41,24 +41,27 @@ AGPSController::AGPSController(const char* port_name, const char* name)
 
 int AGPSController::write_read(uint8_t command, uint8_t address, uint32_t* value)
 {
-    rx_packet_t rx;
-    tx_packet_t tx = {
-        .type    = command,
-        .address = address,
-        .data    = *value
-    };
+    size_t bytes;
+    int status;
+    int reason;
+    char rx_array[RX_PACKET_SIZE];
+    char tx_array[TX_PACKET_SIZE];
 
-    int status = pasynGenericPointerSyncIO->write(this->asyn_user, &tx, 1);
+    *(tx_array) = command;
+    *(tx_array + 1) = address;
+    *(tx_array + 2) = *value;
+    status = pasynOctetSyncIO->write(this->asyn_user, tx_array, TX_PACKET_SIZE, 1, &bytes);
+    if(status != asynSuccess || bytes != TX_PACKET_SIZE)
+        return status;
+    
+    status = pasynOctetSyncIO->read(this->asyn_user, rx_array, RX_PACKET_SIZE, 1, &bytes, &reason);
     if(status != asynSuccess)
         return status;
     
-    status = pasynGenericPointerSyncIO->read(this->asyn_user, &rx, 1);
-    if(status != asynSuccess)
-        return status;
-    
-    if(rx.reply == INPUT_TYPE_ERROR || rx.reply == PACKET_SIZE_ERROR)
+    int reply = *(rx_array);
+    if(reply == INPUT_TYPE_ERROR || reply == PACKET_SIZE_ERROR || bytes != RX_PACKET_SIZE /* || reason != ASYN_EOM_CNT */)
         return asynError;
     
-    *value = rx.data;
+    *value = *(rx_array + 2);
     return asynSuccess;
 }

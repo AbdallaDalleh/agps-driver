@@ -3,18 +3,8 @@
 
 #include <stdint.h>
 
-typedef struct
-{
-    uint8_t  type;
-    uint8_t  address;
-    uint32_t data;
-} tx_packet_t;
-
-typedef struct
-{
-    uint8_t  reply;
-    uint32_t data;
-} rx_packet_t;
+#define TX_PACKET_SIZE      6
+#define RX_PACKET_SIZE      5
 
 #define COMMAND_SYSTEM              0x00
 #define COMMAND_READ_REGISTER       0x01
