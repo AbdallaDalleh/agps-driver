@@ -1,5 +1,8 @@
 #include <iostream>
 
+using std::cout;
+using std::endl;
+
 #include <epicsExport.h>
 #include <asynPortDriver.h>
 #include <asynOctetSyncIO.h>
@@ -11,10 +14,10 @@ class AGPSController : public asynPortDriver
 {
 public:
     AGPSController(const char* port_name, const char* asyn_name);
-    virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
-    virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
-    virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-    virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+    // virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
+    // virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
+    // virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
+    // virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
 
 private:
     asynUser* asyn_user;
@@ -42,8 +45,8 @@ AGPSController::AGPSController(const char* port_name, const char* name)
 int AGPSController::write_read(uint8_t command, uint8_t address, uint32_t* value)
 {
     size_t bytes;
-    int status;
-    int reason;
+    int  status;
+    int  reason;
     char rx_array[RX_PACKET_SIZE];
     char tx_array[TX_PACKET_SIZE];
 
@@ -64,4 +67,30 @@ int AGPSController::write_read(uint8_t command, uint8_t address, uint32_t* value
     
     *value = *(rx_array + 2);
     return asynSuccess;
+}
+
+extern "C" {
+
+asynStatus AGPSControllerConfigure(const char* port_name, const char* name)
+{
+    new AGPSController(port_name, name);
+    return asynSuccess;
+}
+
+static const iocshArg arg0 = {"Port name", iocshArgString};
+static const iocshArg arg1 = {"Asyn Port name", iocshArgString};
+static const iocshArg* args[2] = { &arg0, &arg1 };
+static const iocshFuncDef AGPSControllerFuncDef = {"AGPSControllerConfigure", 2, args};
+static void  AGPSControllerConfigureCallFunc(const iocshArgBuf* args)
+{
+    AGPSControllerConfigure(args[0].sval, args[1].sval);
+}
+
+static void AGPSControllerRegister()
+{
+    iocshRegister(&AGPSControllerFuncDef, AGPSControllerConfigureCallFunc);
+}
+
+epicsExportRegistrar(AGPSControllerRegister);
+
 }
