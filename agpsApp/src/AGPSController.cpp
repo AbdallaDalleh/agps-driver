@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 using std::cout;
 using std::endl;
@@ -20,7 +21,7 @@ class AGPSController : public asynPortDriver
 public:
     AGPSController(const char* port_name, const char* asyn_name);
     virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
-    // virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
+    virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
     // virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
     // virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
 
@@ -112,6 +113,67 @@ asynStatus AGPSController::readInt32(asynUser *pasynUser, epicsInt32 *value)
     else
     {
         cout << "Unknown readInt32 function: " << function << endl;
+        return asynError;
+    }
+}
+
+asynStatus AGPSController::readFloat64(asynUser *pasynUser, epicsFloat64 *value)
+{
+    int address;
+    int function = pasynUser->reason;
+    asynStatus status;
+    uint32_t data;
+    float _value;
+
+    getAddress(pasynUser, &address);
+    if(function == index_f_register)
+    {
+        // These are addresses for integer registers in the register map.
+        if((address >= 8 && address <= 47) || address == 49)
+        {
+            status = readAddress(COMMAND_READ_REGISTER, address, &data);
+            if(status != asynSuccess)
+            {
+                cout << "Read float register failed" << endl;
+                return status;
+            }
+
+            // setIntegerParam(function, data);
+            memcpy(&_value, &data, sizeof(data));
+            *value = _value;
+            return asynSuccess;
+        }
+        else
+        {
+            cout << "Invalid float register address" << endl;
+            return asynError;
+        }
+    }
+    else if(function == index_f_parameter)
+    {
+        if(address == 35 || (address >= 1 && address <= 33))
+        {
+            status = readAddress(COMMAND_READ_PARAMETER, address, &data);
+            if(status != asynSuccess)
+            {
+                cout << "Read float parameter failed" << endl;
+                return status;
+            }
+
+            // setIntegerParam(function, value);
+            memcpy(&_value, &data, sizeof(data));
+            *value = _value;
+            return asynSuccess;
+        }
+        else
+        {
+            cout << "Invalid float parameter address" << endl;
+            return asynError;
+        }
+    }
+    else
+    {
+        cout << "Unknown readFloat64 function: " << function << endl;
         return asynError;
     }
 }
