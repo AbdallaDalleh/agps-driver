@@ -32,7 +32,7 @@ protected:
 
 private:
     asynUser* asyn_user;
-    int write_read(uint8_t command, uint8_t address, uint32_t* value);
+    asynStatus readAddress(uint8_t command, uint8_t address, uint32_t* value);
 };
 
 AGPSController::AGPSController(const char* port_name, const char* name)
@@ -62,7 +62,7 @@ asynStatus AGPSController::readInt32(asynUser *pasynUser, epicsInt32 *value)
 {
     int address;
     int function = pasynUser->reason;
-    int status;
+    asynStatus status;
     uint32_t data;
 
     getAddress(pasynUser, &address);
@@ -71,11 +71,11 @@ asynStatus AGPSController::readInt32(asynUser *pasynUser, epicsInt32 *value)
         // These are addresses for integer registers in the register map.
         if((address >= 0 && address <= 7) || address == 48 || address == 50)
         {
-            status = write_read(COMMAND_READ_REGISTER, address, &data);
+            status = readAddress(COMMAND_READ_REGISTER, address, &data);
             if(status != asynSuccess)
             {
                 cout << "Read integer register failed" << endl;
-                return (asynStatus) status;
+                return status;
             }
 
             // setIntegerParam(function, data);
@@ -92,11 +92,11 @@ asynStatus AGPSController::readInt32(asynUser *pasynUser, epicsInt32 *value)
     {
         if(address == 34 || (address >= 36 && address <= 59))
         {
-            status = write_read(COMMAND_READ_PARAMETER, address, &data);
+            status = readAddress(COMMAND_READ_PARAMETER, address, &data);
             if(status != asynSuccess)
             {
                 cout << "Read integer parameter failed" << endl;
-                return (asynStatus) status;
+                return status;
             }
 
             // setIntegerParam(function, value);
@@ -116,10 +116,10 @@ asynStatus AGPSController::readInt32(asynUser *pasynUser, epicsInt32 *value)
     }
 }
 
-int AGPSController::write_read(uint8_t command, uint8_t address, uint32_t* value)
+asynStatus AGPSController::readAddress(uint8_t command, uint8_t address, uint32_t* value)
 {
     size_t bytes;
-    int  status;
+    asynStatus status;
     int  reason;
     char rx_array[RX_PACKET_SIZE];
     char tx_array[TX_PACKET_SIZE];
