@@ -29,11 +29,11 @@
 # If using the sequencer, point SNCSEQ at its top directory:
 #SNCSEQ = $(MODULES)/seq-ver
 
-SUPPORT=/home/abdalla/epics/support
+SUPPORT=/opt/epics/support
 ASYN=$(SUPPORT)/asyn
 
 # EPICS_BASE should appear last so earlier modules can override stuff:
-EPICS_BASE = /home/abdalla/epics/base
+EPICS_BASE = /opt/epics/base
 
 # Set RULES here if you want to use build rules from somewhere
 # other than EPICS_BASE:
