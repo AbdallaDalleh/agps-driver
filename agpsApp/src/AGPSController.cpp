@@ -39,7 +39,7 @@ private:
 AGPSController::AGPSController(const char* port_name, const char* name)
     : asynPortDriver(port_name,
                     255,
-                    asynInt32Mask | asynFloat64Mask,
+                    asynInt32Mask | asynFloat64Mask | asynDrvUserMask,
                     0,
                     ASYN_CANBLOCK | ASYN_MULTIDEVICE,
                     1,
