@@ -1,0 +1,11 @@
+file parameters.template {
+    pattern { SYS,  NAME,               DTYP,           PORT,   ADDR,   TYPE,   EGU,    VAL }
+            { AGPS, MaxCurrentOutput,   asynFloat64,    AGPS,   0,      f,      I,      15 }
+            { AGPS, MaxVoltageOutput,   asynFloat64,    AGPS,   1,      f,      V,      20 }
+            { AGPS, CurrentUpperLimit,  asynFloat64,    AGPS,   2,      f,      I,      1  }
+            { AGPS, CurrentLowerLimit,  asynFloat64,    AGPS,   3,      f,      I,      0  }
+            { AGPS, VoltageUpperLimit,  asynFloat64,    AGPS,   4,      f,      V,      1  }
+            { AGPS, VoltageLowerLimit,  asynFloat64,    AGPS,   5,      f,      V,      0  }
+            { AGPS, CurrentSetpoint,    asynFloat64,    AGPS,   6,      f,      I,      0  }
+            { AGPS, VoltageSetpoint,    asynFloat64,    AGPS,   7,      f,      V,      0  }
+}
