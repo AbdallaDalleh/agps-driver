@@ -1,0 +1,78 @@
+record(mbbi, "$(SYS):getState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 0)i_register")
+    field(ZRST, "OFF")          field(ZRVL, "0")
+    field(ONST, "Ramping Up")   field(ONVL, "1")
+    field(TWST, "Ramping Down") field(TWVL, "2")
+    field(THST, "Standby")      field(THVL, "3")
+    field(FRST, "Trigger On")   field(FRVL, "4")
+    field(FVST, "Reset")        field(FVVL, "5")
+    field(SXST, "Timeout")      field(SXVL, "10")
+    field(SVST, "Interlock")    field(SVVL, "20")
+    field(EIST, "Undefined")    field(EIVL, "999")
+}
+
+record(mbbi, "$(SYS):getFilamentState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 1)i_register")
+    field(ZRST, "OFF")       field(ZRVL, "0")
+    field(ONST, "ON")        field(ONVL, "1")
+    field(TWST, "Fault")     field(TWVL, "2")
+    field(THST, "Transient") field(THVL, "3")
+    field(FRST, "Timeout")   field(FRVL, "10")
+    field(FVST, "Interlock") field(FVVL, "20")
+    field(SXST, "Undefined") field(SXVL, "999")
+}
+
+record(mbbi, "$(SYS):getHVState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 2)i_register")
+    field(ZRST, "OFF")       field(ZRVL, "0")
+    field(ONST, "ON")        field(ONVL, "1")
+    field(TWST, "Fault")     field(TWVL, "2")
+    field(THST, "Transient") field(THVL, "3")
+    field(FRST, "Timeout")   field(FRVL, "10")
+    field(FVST, "Interlock") field(FVVL, "20")
+    field(SXST, "Undefined") field(SXVL, "999")
+}
+
+record(mbbi, "$(SYS):getRegulatorState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 3)i_register")
+    field(ZRST, "OFF")          field(ZRVL, "0")
+    field(ONST, "Ramping Up")   field(ONVL, "1")
+    field(TWST, "Ramping Down") field(TWVL, "2")
+    field(THST, "Standby")      field(THVL, "3")
+    field(FRST, "Trigger On")   field(FRVL, "4")
+    field(FVST, "Undefined")    field(FVVL, "999")
+}
+
+record(mbbi, "$(SYS):getLoggerState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 4)i_register")
+    field(ZRST, "OFF")        field(ZRVL, "0")
+    field(ONST, "ON")         field(ONVL, "1")
+    field(TWST, "Postmortem") field(TWVL, "2")
+    field(THST, "Interlock")  field(THVL, "20")
+    field(FRST, "Undefined")  field(FRVL, "999")
+}
+
+record(mbbi, "$(SYS):getSupervisorState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 5)i_register")
+    field(ZRST, "ON")        field(ZRVL, "0")
+    field(ONST, "Interlock") field(ONVL, "20")
+    field(TWST, "Undefined") field(TWVL, "999")
+}

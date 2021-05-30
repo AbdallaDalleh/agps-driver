@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 #include <cstring>
 
 using std::cout;
 using std::endl;
+using std::string;
 
 #include <epicsExport.h>
 #include <asynPortDriver.h>
@@ -22,6 +24,8 @@ public:
     AGPSController(const char* port_name, const char* asyn_name);
     virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
     virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+    virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
+    virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
 protected:
     int index_i_parameter;
@@ -54,12 +58,10 @@ AGPSController::AGPSController(const char* port_name, const char* name)
     createParam(F_PARAMETER, asynParamFloat64, &index_f_parameter);
     createParam(I_PARAMETER, asynParamFloat64, &index_i_parameter);
     createParam(F_REGISTER,  asynParamFloat64, &index_f_register);
-    createParam(I_REGISTER,  asynParamFloat64, &index_i_register);
+    createParam(I_REGISTER,  asynParamInt32,   &index_i_register);
 
-    uint8_t command = COMMAND_CONTROL;
-    uint8_t address = 0;
     uint32_t data = 0;
-    status = performIO(command, address, &data);
+    status = performIO(COMMAND_CONTROL, 0, &data);
     if(status != asynSuccess)
         cout << "Warning: Could not take control of the power supply." << endl;
 }
@@ -150,6 +152,44 @@ asynStatus AGPSController::writeFloat64(asynUser* pasynUser, epicsFloat64 value)
         }
     }
 
+    return asynSuccess;
+}
+
+asynStatus AGPSController::readInt32(asynUser* pasynUser, epicsInt32* value)
+{
+    string message;
+    uint8_t command;
+    uint32_t data;
+    asynStatus status;
+    int address;
+    int function = pasynUser->reason;
+    getAddress(pasynUser, &address);
+
+    if(function != index_i_register && function != index_i_parameter)
+    {
+        cout << "Unknown function: " << function << endl;
+        return asynError;
+    }
+
+    if(function == index_i_register)
+    {
+        command = COMMAND_READ_REGISTER;
+        message = "Read register";
+    }
+    else
+    {
+        command = COMMAND_READ_PARAMETER;
+        message = "Read parameter";
+    }
+
+    status = performIO(command, address, &data);
+    if(status != asynSuccess)
+    {
+        cout << message << " with address " << address << " failed" << endl;
+        return status;
+    }
+
+    *value = data;
     return asynSuccess;
 }
 
