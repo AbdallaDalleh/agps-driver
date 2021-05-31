@@ -40,7 +40,7 @@ private:
 
 AGPSController::AGPSController(const char* port_name, const char* name)
     : asynPortDriver(port_name,
-                    255,
+                    256,
                     asynInt32Mask | asynFloat64Mask | asynDrvUserMask,
                     asynInt32Mask | asynFloat64Mask,
                     ASYN_CANBLOCK | ASYN_MULTIDEVICE,
@@ -161,6 +161,9 @@ asynStatus AGPSController::readInt32(asynUser* pasynUser, epicsInt32* value)
         return asynError;
     }
 
+    if(address == 255)
+        return asynSuccess;
+
     if(function == index_i_register)
     {
         command = COMMAND_READ_REGISTER;
@@ -199,7 +202,13 @@ asynStatus AGPSController::writeInt32(asynUser* pasynUser, epicsInt32 value)
         return asynError;
     }
 
-    if(function == index_i_register)
+    if(address == 255)
+    {
+        command = COMMAND_SYSTEM;
+        message = "Set command";
+        address = (value & 0xFF);
+    }
+    else if(function == index_i_register)
     {
         command = COMMAND_WRITE_REGISTER;
         message = "Write register";

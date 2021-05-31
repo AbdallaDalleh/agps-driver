@@ -8,4 +8,5 @@ file parameters.template {
             { AGPS, VoltageLowerLimit,  asynFloat64,    AGPS,   5,      f,      V,      0  }
             { AGPS, CurrentSetpoint,    asynFloat64,    AGPS,   6,      f,      I,      0  }
             { AGPS, VoltageSetpoint,    asynFloat64,    AGPS,   7,      f,      V,      0  }
+            { AGPS, TriggerCount,       asynInt32,      AGPS,   33,     i,      "",     5  }
 }
