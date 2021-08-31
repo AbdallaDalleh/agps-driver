@@ -1,0 +1,4 @@
+file system.template {
+    pattern {SYS,   PORT}
+            {AGPS,  AGPS}
+}

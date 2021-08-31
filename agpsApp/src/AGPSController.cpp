@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 #include <cstring>
 
 using std::cout;
 using std::endl;
+using std::string;
 
 #include <epicsExport.h>
 #include <asynPortDriver.h>
@@ -20,10 +22,10 @@ class AGPSController : public asynPortDriver
 {
 public:
     AGPSController(const char* port_name, const char* asyn_name);
-    virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
     virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
-    // virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-    // virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+    virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+    virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
+    virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
 protected:
     int index_i_parameter;
@@ -33,14 +35,14 @@ protected:
 
 private:
     asynUser* asyn_user;
-    asynStatus readAddress(uint8_t command, uint8_t address, uint32_t* value);
+    asynStatus performIO(uint8_t command, uint8_t address, uint32_t* value);
 };
 
 AGPSController::AGPSController(const char* port_name, const char* name)
     : asynPortDriver(port_name,
-                    255,
+                    256,
+                    asynInt32Mask | asynFloat64Mask | asynDrvUserMask,
                     asynInt32Mask | asynFloat64Mask,
-                    0,
                     ASYN_CANBLOCK | ASYN_MULTIDEVICE,
                     1,
                     0, 0)
@@ -57,151 +59,200 @@ AGPSController::AGPSController(const char* port_name, const char* name)
     createParam(I_PARAMETER, asynParamInt32,   &index_i_parameter);
     createParam(F_REGISTER,  asynParamFloat64, &index_f_register);
     createParam(I_REGISTER,  asynParamInt32,   &index_i_register);
-}
 
-asynStatus AGPSController::readInt32(asynUser *pasynUser, epicsInt32 *value)
-{
-    int address;
-    int function = pasynUser->reason;
-    asynStatus status;
-    uint32_t data;
-
-    getAddress(pasynUser, &address);
-    if(function == index_i_register)
-    {
-        // These are addresses for integer registers in the register map.
-        if((address >= 0 && address <= 7) || address == 48 || address == 50)
-        {
-            status = readAddress(COMMAND_READ_REGISTER, address, &data);
-            if(status != asynSuccess)
-            {
-                cout << "Read integer register failed" << endl;
-                return status;
-            }
-
-            // setIntegerParam(function, data);
-            *value = data;
-            return asynSuccess;
-        }
-        else
-        {
-            cout << "Invalid integer register address" << endl;
-            return asynError;
-        }
-    }
-    else if(function == index_i_parameter)
-    {
-        if(address == 34 || (address >= 36 && address <= 59))
-        {
-            status = readAddress(COMMAND_READ_PARAMETER, address, &data);
-            if(status != asynSuccess)
-            {
-                cout << "Read integer parameter failed" << endl;
-                return status;
-            }
-
-            // setIntegerParam(function, value);
-            *value = data;
-            return asynSuccess;
-        }
-        else
-        {
-            cout << "Invalid integer parameter address" << endl;
-            return asynError;
-        }
-    }
-    else
-    {
-        cout << "Unknown readInt32 function: " << function << endl;
-        return asynError;
-    }
+    uint32_t data = 0;
+    status = performIO(COMMAND_CONTROL, 0, &data);
+    if(status != asynSuccess)
+        cout << "Warning: Could not take control of the power supply." << endl;
 }
 
 asynStatus AGPSController::readFloat64(asynUser *pasynUser, epicsFloat64 *value)
 {
+    uint8_t command;
+    string message;
     int address;
     int function = pasynUser->reason;
     asynStatus status;
     uint32_t data;
-    float _value;
+    float float_value;
+
+    if(function != index_f_parameter && function != index_f_register)
+    {
+        cout << "Invalid asyn function: " << function << endl;
+        return asynError;
+    }
 
     getAddress(pasynUser, &address);
-    if(function == index_f_register)
+    if(function == index_i_register)
     {
-        // These are addresses for integer registers in the register map.
-        if((address >= 8 && address <= 47) || address == 49)
-        {
-            status = readAddress(COMMAND_READ_REGISTER, address, &data);
-            if(status != asynSuccess)
-            {
-                cout << "Read float register failed" << endl;
-                return status;
-            }
-
-            // setIntegerParam(function, data);
-            memcpy(&_value, &data, sizeof(data));
-            *value = _value;
-            return asynSuccess;
-        }
-        else
-        {
-            cout << "Invalid float register address" << endl;
-            return asynError;
-        }
-    }
-    else if(function == index_f_parameter)
-    {
-        if(address == 35 || (address >= 1 && address <= 33))
-        {
-            status = readAddress(COMMAND_READ_PARAMETER, address, &data);
-            if(status != asynSuccess)
-            {
-                cout << "Read float parameter failed" << endl;
-                return status;
-            }
-
-            // setIntegerParam(function, value);
-            memcpy(&_value, &data, sizeof(data));
-            *value = _value;
-            return asynSuccess;
-        }
-        else
-        {
-            cout << "Invalid float parameter address" << endl;
-            return asynError;
-        }
+        command = COMMAND_READ_REGISTER;
+        message = "Read register";
     }
     else
     {
-        cout << "Unknown readFloat64 function: " << function << endl;
-        return asynError;
+        command = COMMAND_READ_PARAMETER;
+        message = "Read parameter";
     }
+
+    status = performIO(command, address, &data);
+    if(status != asynSuccess)
+    {
+        cout << "Read register with address " << address << " failed" << endl;
+        return status;
+    }
+
+    memcpy(&float_value, &data, sizeof(data));
+    *value = float_value;
+    return asynSuccess;
 }
 
-asynStatus AGPSController::readAddress(uint8_t command, uint8_t address, uint32_t* value)
+asynStatus AGPSController::writeFloat64(asynUser* pasynUser, epicsFloat64 value)
 {
-    size_t bytes;
+    uint8_t command;
+    string message;
+    int address;
+    int function = pasynUser->reason;
+    asynStatus status;
+    uint32_t data;
+
+    getAddress(pasynUser, &address);
+    if(function != index_f_parameter && function != index_f_register)
+    {
+        cout << "Invalid asyn function: " << function << endl;
+        return asynError;
+    }
+
+    float v = (float) value;
+    memcpy(&data, &v, sizeof(data));
+    if(function == index_i_register)
+    {
+        command = COMMAND_WRITE_REGISTER;
+        message = "Write register";
+    }
+    else
+    {
+        command = COMMAND_WRITE_PARAMETER;
+        message = "Write parameter";
+    }
+
+    status = performIO(command, address, &data);
+    if(status != asynSuccess)
+    {
+        cout << message << " with address " << address << " failed" << endl;
+        return status;
+    }
+
+    return asynSuccess;
+}
+
+asynStatus AGPSController::readInt32(asynUser* pasynUser, epicsInt32* value)
+{
+    string message;
+    uint8_t command;
+    uint32_t data;
+    asynStatus status;
+    int address;
+    int function = pasynUser->reason;
+    getAddress(pasynUser, &address);
+
+    if(function != index_i_register && function != index_i_parameter)
+    {
+        cout << "Unknown function: " << function << endl;
+        return asynError;
+    }
+
+    if(address == 255)
+        return asynSuccess;
+
+    if(function == index_i_register)
+    {
+        command = COMMAND_READ_REGISTER;
+        message = "Read register";
+    }
+    else
+    {
+        command = COMMAND_READ_PARAMETER;
+        message = "Read parameter";
+    }
+
+    status = performIO(command, address, &data);
+    if(status != asynSuccess)
+    {
+        cout << message << " with address " << address << " failed" << endl;
+        return status;
+    }
+
+    *value = data;
+    return asynSuccess;
+}
+
+asynStatus AGPSController::writeInt32(asynUser* pasynUser, epicsInt32 value)
+{
+    asynStatus status;
+    uint8_t command;
+    uint32_t data;
+    string message;
+    int address;
+    int function = pasynUser->reason;
+    getAddress(pasynUser, &address);
+
+    if(function != index_i_register && function != index_i_parameter)
+    {
+        cout << "Invalid asyn function: " << function << endl;
+        return asynError;
+    }
+
+    if(address == 255)
+    {
+        command = COMMAND_SYSTEM;
+        message = "Set command";
+        address = (value & 0xFF);
+    }
+    else if(function == index_i_register)
+    {
+        command = COMMAND_WRITE_REGISTER;
+        message = "Write register";
+    }
+    else
+    {
+        command = COMMAND_WRITE_PARAMETER;
+        message = "Write parameter";
+    }
+
+    data = (uint32_t) value;
+    status = performIO(command, address, &data);
+    if(status != asynSuccess)
+    {
+        cout << message << " with address " << address << " failed" << endl;
+        return asynError;
+    }
+
+    return asynSuccess;
+}
+
+asynStatus AGPSController::performIO(uint8_t command, uint8_t address, uint32_t* value)
+{
+    size_t  tx_bytes;
+    size_t  rx_bytes;
+    uint8_t reply;
     asynStatus status;
     int  reason;
     char rx_array[RX_PACKET_SIZE];
     char tx_array[TX_PACKET_SIZE];
 
-    *(tx_array) = command;
-    *(tx_array + 1) = address;
-    *(tx_array + 2) = *value;
-    status = pasynOctetSyncIO->write(this->asyn_user, tx_array, TX_PACKET_SIZE, 1, &bytes);
-    if(status != asynSuccess || bytes != TX_PACKET_SIZE)
+    memcpy(tx_array, &command, sizeof(command));
+    memcpy(tx_array + 1, &address, sizeof(address));
+    memcpy(tx_array + 2, value, sizeof(*value));
+    status = pasynOctetSyncIO->writeRead(this->asyn_user, tx_array, TX_PACKET_SIZE, rx_array, RX_PACKET_SIZE, 1, &tx_bytes, &rx_bytes, &reason);
+    if(status != asynSuccess || tx_bytes != TX_PACKET_SIZE || rx_bytes != RX_PACKET_SIZE || reason != ASYN_EOM_CNT)
         return status;
-    
-    status = pasynOctetSyncIO->read(this->asyn_user, rx_array, RX_PACKET_SIZE, 1, &bytes, &reason);
-    if(status != asynSuccess)
-        return status;
-    
-    int reply = *(rx_array);
-    if(reply == INPUT_TYPE_ERROR || reply == PACKET_SIZE_ERROR || bytes != RX_PACKET_SIZE /* || reason != ASYN_EOM_CNT */)
+
+    memcpy(&reply, rx_array, sizeof(reply));
+    if(reply >= REPLY_SYS_COMMAND_ERROR)
         return asynError;
     
-    *value = *(rx_array + 2);
+    if(command == COMMAND_READ_PARAMETER || command == COMMAND_READ_REGISTER)
+        memcpy(value, rx_array + 1, sizeof(uint32_t));
     return asynSuccess;
 }
 
