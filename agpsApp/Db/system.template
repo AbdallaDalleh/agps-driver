@@ -92,3 +92,17 @@ record(mbbi, "$(SYS):getSupervisorState") {
     field(ONST, "Interlock") field(ONVL, "20")
     field(TWST, "Undefined") field(TWVL, "999")
 }
+
+record(mbbiDirect, "$(SYS):getInterlocksState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT), 9)i_register")
+}
+
+record(mbbiDirect, "$(SYS):getWarningsState") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT), 12)i_register")
+}
