@@ -12,6 +12,5 @@ record(ao, "$(SYS):set$(NAME)") {
     field(PINI, "NO")
     field(SCAN, "Passive")
     field(EGU,  "$(EGU)")
-    
     field(FLNK, "$(SYS):get$(NAME)")
 }
