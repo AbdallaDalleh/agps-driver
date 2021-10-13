@@ -106,3 +106,17 @@ record(mbbiDirect, "$(SYS):getWarningsState") {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 12)i_register")
 }
+
+record(mbbiDirect, "$(SYS):getHVPSStatus") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT), 13)i_register")
+}
+
+record(mbbiDirect, "$(SYS):getFILPSStatus") {
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT), 14)i_register")
+}
