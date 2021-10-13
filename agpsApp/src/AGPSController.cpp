@@ -83,7 +83,7 @@ asynStatus AGPSController::readFloat64(asynUser *pasynUser, epicsFloat64 *value)
     }
 
     getAddress(pasynUser, &address);
-    if(function == index_i_register)
+    if(function == index_f_register)
     {
         command = COMMAND_READ_REGISTER;
         message = "Read register";
@@ -124,7 +124,7 @@ asynStatus AGPSController::writeFloat64(asynUser* pasynUser, epicsFloat64 value)
 
     float v = (float) value;
     memcpy(&data, &v, sizeof(data));
-    if(function == index_i_register)
+    if(function == index_f_register)
     {
         command = COMMAND_WRITE_REGISTER;
         message = "Write register";

@@ -1,6 +1,6 @@
 record(ai, "$(SYS):get$(NAME)") {
     field(DTYP, "$(DTYP)")
-    field(INP,  "@asyn($(ADDR))$(TYPE)_parameter")
+    field(INP,  "@asyn($(PORT) $(ADDR))$(TYPE)_parameter")
     field(PINI, "YES")
     field(SCAN, "Passive")
     field(EGU,  "$(EGU)")
@@ -8,9 +8,10 @@ record(ai, "$(SYS):get$(NAME)") {
 
 record(ao, "$(SYS):set$(NAME)") {
     field(DTYP, "$(DTYP)")
-    field(OUT,  "@asyn($(ADDR))$(TYPE)_parameter")
+    field(OUT,  "@asyn($(PORT) $(ADDR))$(TYPE)_parameter")
     field(PINI, "NO")
     field(SCAN, "Passive")
     field(EGU,  "$(EGU)")
     field(FLNK, "$(SYS):get$(NAME)")
 }
+
