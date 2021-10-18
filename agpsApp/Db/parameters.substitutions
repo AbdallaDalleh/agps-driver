@@ -97,4 +97,4 @@ pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { NET_MASK2, asynInt32, 95, i, "" }
         { NET_MASK3, asynInt32, 96, i, "" }
         { DEVICE_ID, asynInt32, 97, i, "" }
-        { PARAMETER_COUNT, asynInt32, 98, i, "" }
+

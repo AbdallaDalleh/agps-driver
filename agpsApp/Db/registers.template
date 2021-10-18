@@ -2,7 +2,7 @@ record(ai, "$(SYS):get$(NAME)") {
     field(DTYP, "$(DTYP)")
     field(INP,  "@asyn($(PORT) $(ADDR))$(TYPE)_register")
     field(PINI, "YES")
-    field(SCAN, "Passive")
+    field(SCAN, "1 second")
     field(EGU,  "$(EGU)")
 }
 

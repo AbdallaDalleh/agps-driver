@@ -88,4 +88,4 @@ pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { STANDBY_EMISSION_INTERLOCK_VAL, asynFloat64, 95, f, A }
         { TRIGON_EMISSION_INTERLOCK_VAL, asynFloat64, 96, f, A }
         { INTERLOCKS_MASK, asynInt32, 97, i, "" }
-        { REGISTER_COUNT, asynInt32, 98, i, "" }
+
