@@ -17,6 +17,7 @@ using std::string;
 #define F_PARAMETER "f_parameter"
 #define I_REGISTER  "i_register"
 #define F_REGISTER  "f_register"
+#define P_CONTROL	"control"
 
 class AGPSController : public asynPortDriver
 {
@@ -26,12 +27,14 @@ public:
     virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
     virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
     virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
+    virtual asynStatus readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask);
 
 protected:
     int index_i_parameter;
     int index_f_parameter;
     int index_i_register;
     int index_f_register;
+	int index_control;
 
 private:
     asynUser* asyn_user;
@@ -41,8 +44,8 @@ private:
 AGPSController::AGPSController(const char* port_name, const char* name)
     : asynPortDriver(port_name,
                     256,
-                    asynInt32Mask | asynFloat64Mask | asynDrvUserMask,
-                    asynInt32Mask | asynFloat64Mask,
+                    asynInt32Mask | asynFloat64Mask | asynUInt32DigitalMask | asynDrvUserMask,
+                    asynInt32Mask | asynFloat64Mask | asynUInt32DigitalMask,
                     ASYN_CANBLOCK | ASYN_MULTIDEVICE,
                     1,
                     0, 0)
@@ -59,6 +62,7 @@ AGPSController::AGPSController(const char* port_name, const char* name)
     createParam(I_PARAMETER, asynParamInt32,   &index_i_parameter);
     createParam(F_REGISTER,  asynParamFloat64, &index_f_register);
     createParam(I_REGISTER,  asynParamInt32,   &index_i_register);
+	createParam(P_CONTROL,   asynParamInt32,   &index_control);
 
     uint32_t data = 0;
     status = performIO(COMMAND_CONTROL, 0, &data);
@@ -155,6 +159,9 @@ asynStatus AGPSController::readInt32(asynUser* pasynUser, epicsInt32* value)
     int function = pasynUser->reason;
     getAddress(pasynUser, &address);
 
+	if(function == index_control)
+		return asynSuccess;
+
     if(function != index_i_register && function != index_i_parameter)
     {
         cout << "Unknown function: " << function << endl;
@@ -196,7 +203,7 @@ asynStatus AGPSController::writeInt32(asynUser* pasynUser, epicsInt32 value)
     int function = pasynUser->reason;
     getAddress(pasynUser, &address);
 
-    if(function != index_i_register && function != index_i_parameter)
+    if(function != index_i_register && function != index_i_parameter && function != index_control)
     {
         cout << "Invalid asyn function: " << function << endl;
         return asynError;
@@ -213,11 +220,16 @@ asynStatus AGPSController::writeInt32(asynUser* pasynUser, epicsInt32 value)
         command = COMMAND_WRITE_REGISTER;
         message = "Write register";
     }
-    else
+    else if(function == index_i_parameter)
     {
         command = COMMAND_WRITE_PARAMETER;
         message = "Write parameter";
     }
+	else
+	{
+		command = COMMAND_CONTROL;
+		message = "Take control";
+	}
 
     data = (uint32_t) value;
     status = performIO(command, address, &data);
@@ -228,6 +240,44 @@ asynStatus AGPSController::writeInt32(asynUser* pasynUser, epicsInt32 value)
     }
 
     return asynSuccess;
+}
+
+asynStatus AGPSController::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask)
+{
+    string message;
+    uint8_t command;
+    uint32_t data;
+    asynStatus status;
+    int address;
+    int function = pasynUser->reason;
+    getAddress(pasynUser, &address);
+
+	if(function != index_i_register && function != index_i_parameter)
+	{
+		cout << "Unknown readUInt32Digital function" << endl;
+		return asynError;
+	}
+
+	if(function == index_i_register)
+	{
+		command = COMMAND_READ_REGISTER;
+		message = "Read register digital ";
+	}
+	else
+	{
+		command = COMMAND_READ_PARAMETER;
+		message = "Read parameter digital ";
+	}
+
+	status = performIO(command, address, &data);
+	if(status != asynSuccess)
+	{
+		cout << message << " failed " << endl;
+		return asynError;
+	}
+
+	*value = data & mask;
+	return asynSuccess;
 }
 
 asynStatus AGPSController::performIO(uint8_t command, uint8_t address, uint32_t* value)
@@ -243,13 +293,19 @@ asynStatus AGPSController::performIO(uint8_t command, uint8_t address, uint32_t*
     memcpy(tx_array, &command, sizeof(command));
     memcpy(tx_array + 1, &address, sizeof(address));
     memcpy(tx_array + 2, value, sizeof(*value));
-    status = pasynOctetSyncIO->writeRead(this->asyn_user, tx_array, TX_PACKET_SIZE, rx_array, RX_PACKET_SIZE, 1, &tx_bytes, &rx_bytes, &reason);
-    if(status != asynSuccess || tx_bytes != TX_PACKET_SIZE || rx_bytes != RX_PACKET_SIZE || reason != ASYN_EOM_CNT)
+    status = pasynOctetSyncIO->writeRead(this->asyn_user, tx_array, TX_PACKET_SIZE, rx_array, RX_PACKET_SIZE, 2, &tx_bytes, &rx_bytes, &reason);
+    if(status != asynSuccess || tx_bytes != TX_PACKET_SIZE || rx_bytes != RX_PACKET_SIZE /* || reason != ASYN_EOM_CNT*/ )
+	{
+		printf("Status: %d\n", status);
         return status;
+	}
 
     memcpy(&reply, rx_array, sizeof(reply));
     if(reply >= REPLY_SYS_COMMAND_ERROR)
+	{
+		printf("Reply: %d\n", reply);
         return asynError;
+	}
     
     if(command == COMMAND_READ_PARAMETER || command == COMMAND_READ_REGISTER)
         memcpy(value, rx_array + 1, sizeof(uint32_t));

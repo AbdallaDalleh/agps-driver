@@ -18,7 +18,7 @@ record(mbbi, "$(SYS):getState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 0)i_register")
+    field(INP,  "@asyn($(PORT), 1)i_register")
     field(ZRST, "OFF")          field(ZRVL, "0")
     field(ONST, "Ramping Up")   field(ONVL, "1")
     field(TWST, "Ramping Down") field(TWVL, "2")
@@ -34,7 +34,7 @@ record(mbbi, "$(SYS):getFilamentState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 1)i_register")
+    field(INP,  "@asyn($(PORT), 2)i_register")
     field(ZRST, "OFF")       field(ZRVL, "0")
     field(ONST, "ON")        field(ONVL, "1")
     field(TWST, "Fault")     field(TWVL, "2")
@@ -48,7 +48,7 @@ record(mbbi, "$(SYS):getHVState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 2)i_register")
+    field(INP,  "@asyn($(PORT), 3)i_register")
     field(ZRST, "OFF")       field(ZRVL, "0")
     field(ONST, "ON")        field(ONVL, "1")
     field(TWST, "Fault")     field(TWVL, "2")
@@ -62,7 +62,7 @@ record(mbbi, "$(SYS):getRegulatorState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 3)i_register")
+    field(INP,  "@asyn($(PORT), 4)i_register")
     field(ZRST, "OFF")          field(ZRVL, "0")
     field(ONST, "Ramping Up")   field(ONVL, "1")
     field(TWST, "Ramping Down") field(TWVL, "2")
@@ -75,7 +75,7 @@ record(mbbi, "$(SYS):getLoggerState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 4)i_register")
+    field(INP,  "@asyn($(PORT), 5)i_register")
     field(ZRST, "OFF")        field(ZRVL, "0")
     field(ONST, "ON")         field(ONVL, "1")
     field(TWST, "Postmortem") field(TWVL, "2")
@@ -87,7 +87,7 @@ record(mbbi, "$(SYS):getSupervisorState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 5)i_register")
+    field(INP,  "@asyn($(PORT), 7)i_register")
     field(ZRST, "ON")        field(ZRVL, "0")
     field(ONST, "Interlock") field(ONVL, "20")
     field(TWST, "Undefined") field(TWVL, "999")
@@ -96,27 +96,34 @@ record(mbbi, "$(SYS):getSupervisorState") {
 record(mbbiDirect, "$(SYS):getInterlocksState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 9)i_register")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT) 10 0xFFFF)i_register")
 }
 
 record(mbbiDirect, "$(SYS):getWarningsState") {
     field(PINI, "YES")
     field(SCAN, "1 second")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 12)i_register")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT) 13 0x1F)i_register")
 }
 
 record(mbbiDirect, "$(SYS):getHVPSStatus") {
     field(PINI, "YES")
     field(SCAN, "1 second")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 13)i_register")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT) 14 0x1F)i_register")
 }
 
 record(mbbiDirect, "$(SYS):getFILPSStatus") {
     field(PINI, "YES")
     field(SCAN, "1 second")
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT), 14)i_register")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT) 15 0x1F)i_register")
+}
+
+record(longout, "$(SYS):takeControl")
+{
+	field(PINI, "YES")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT) 0)control")
 }
