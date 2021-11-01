@@ -1,8 +1,6 @@
 pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { FIRMWARE_VERSION, asynFloat64, 0, f, "" }
         { INTERLOCKS, asynInt32, 10, i, "" }
-        { FIRST_INTERLOCK, asynInt32, 11, i, "" }
-        { SECOND_INTERLOCK, asynInt32, 12, i, "" }
         { WARNINGS, asynInt32, 13, i, "" }
         { HV_PS_STATUS, asynInt32, 14, i, "" }
         { FIL_PS_STATUS, asynInt32, 15, i, "" }
