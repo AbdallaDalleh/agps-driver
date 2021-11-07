@@ -97,6 +97,18 @@ record(mbbi, "$(SYS):getSupervisorState") {
     field(TWST, "Undefined") field(TWVL, "999")
 }
 
+record(mbbi, "$(SYS):getControlInterface") {
+    field(PINI, "YES")
+    field(SCAN, ".2 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT), 8)i_register")
+    field(ZRST, "UNDECIDED")           field(ZRVL, "0")
+    field(ONST, "TCP CLI")             field(ONVL, "1")
+    field(TWST, "TCP DATASTREAM")      field(TWVL, "2")
+    field(THST, "UDP DATASTREAM")      field(THVL, "3")
+    field(FRST, "USB")   	       field(FRVL, "4")
+    
+}
 record(mbbiDirect, "$(SYS):getInterlocksState") {
     field(PINI, "YES")
     field(SCAN, ".2 second")
@@ -176,6 +188,14 @@ record(mbbi, "$(SYS):getSECOND_INTERLOCK") {
     field(TTST, "HV PS Fault")          field(TTVL, "8192")
     field(FTST, "FIL PS Fault")         field(FTVL, "16384")
     field(FFST, "Software Interlock")   field(FFVL, "32768")
+}
+record(mbbi, "$(SYS):getControlMode") {
+    field(PINI, "YES")
+    field(SCAN, ".2 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn(AGPS, 9)i_register")
+    field(ZRST, "Remote Mode")  field(ZRVL, "0")
+    field(ONST, "Local Mode")   field(ONVL, "1")
 }
 record(ai, "$(SYS):getERROR") {
     field(DTYP, "asynFloat64")
