@@ -4,11 +4,6 @@ pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { WARNINGS, asynInt32, 13, i, "" }
         { HV_PS_STATUS, asynInt32, 14, i, "" }
         { FIL_PS_STATUS, asynInt32, 15, i, "" }
-        { ERROR, asynFloat64, 16, f, A }
-        { DRIVE_DIFF, asynFloat64, 17, f, A }
-        { DRIVE, asynFloat64, 18, f, A }
-        { TRIGGER_COUNT, asynInt32, 19, i, "" }
-        { GUN_SPARKS_COUNT, asynInt32, 20, i, "" }
         { ADC_OFFSET0, asynFloat64, 21, f, V }
         { ADC_OFFSET1, asynFloat64, 22, f, V }
         { ADC_OFFSET2, asynFloat64, 23, f, V }
@@ -33,29 +28,9 @@ pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { ADC_GAIN9, asynFloat64, 42, f, "" }
         { ADC_GAIN10, asynFloat64, 43, f, "" }
         { ADC_GAIN11, asynFloat64, 44, f, "" }
-        { ADC0, asynFloat64, 45, f, V }
-        { ADC1, asynFloat64, 46, f, V }
-        { ADC2, asynFloat64, 47, f, V }
-        { ADC3, asynFloat64, 48, f, V }
-        { ADC4, asynFloat64, 49, f, V }
-        { ADC5, asynFloat64, 50, f, V }
-        { ADC6, asynFloat64, 51, f, V }
-        { ADC7, asynFloat64, 52, f, V }
-        { ADC8, asynFloat64, 53, f, V }
-        { ADC9, asynFloat64, 54, f, V }
-        { ADC10, asynFloat64, 55, f, V }
-        { ADC11, asynFloat64, 56, f, V }
-        { I_FIL_MEAS, asynFloat64, 57, f, A }
-        { V_FIL_MEAS, asynFloat64, 58, f, V }
-        { I_HV_MEAS, asynFloat64, 59, f, S }
-        { V_HV_MEAS, asynFloat64, 60, f, V }
-        { I_GUN_MEAS, asynFloat64, 61, f, A }
-        { FIL_RESISTANCE, asynFloat64, 62, f, Ohm }
         { DAC_VALUE, asynInt32, 63, i, "" }
         { DIG_INPUTS, asynInt32, 64, i, "" }
         { COUNTER_1HZ, asynInt32, 65, i, "" }
-        { tCC_TEMPERATURE, asynFloat64, 66, f, °C }
-        { AGPS_TEMPERATURE, asynFloat64, 67, f, °C }
         { I_FIL_SETPOINT, asynFloat64, 68, f, A }
         { V_FIL_SETPOINT, asynFloat64, 69, f, V }
         { I_HV_SETPOINT, asynFloat64, 70, f, A }

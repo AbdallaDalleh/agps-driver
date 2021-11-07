@@ -1,27 +1,27 @@
 pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
-        { I_FIL_PS_MAX, asynFloat64, 0, f, A }
-        { V_FIL_PS_MAX, asynFloat64, 1, f, V }
-        { I_FIL_MAX, asynFloat64, 2, f, A }
-        { I_FIL_MIN, asynFloat64, 3, f, A }
-        { V_FIL_MAX, asynFloat64, 4, f, V }
-        { V_FIL_MIN, asynFloat64, 5, f, V }
+        { I_FIL_PS_MAX_P, asynFloat64, 0, f, A }
+        { V_FIL_PS_MAX_P, asynFloat64, 1, f, V }
+        { I_FIL_MAX_P, asynFloat64, 2, f, A }
+        { I_FIL_MIN_P, asynFloat64, 3, f, A }
+        { V_FIL_MAX_P, asynFloat64, 4, f, V }
+        { V_FIL_MIN_P, asynFloat64, 5, f, V }
         { V_FIL_SETPOINT_P, asynFloat64, 6, f, V }
         { I_FIL_SETPOINT_P, asynFloat64, 7, f, A }
-        { I_HV_PS_MAX, asynFloat64, 8, f, A }
-        { V_HV_PS_MAX, asynFloat64, 9, f, V }
-        { I_HV_MAX, asynFloat64, 10, f, A }
-        { I_HV_MIN, asynFloat64, 11, f, A }
-        { V_HV_MAX, asynFloat64, 12, f, V }
-        { V_HV_MIN, asynFloat64, 13, f, V }
+        { I_HV_PS_MAX_P, asynFloat64, 8, f, A }
+        { V_HV_PS_MAX_P, asynFloat64, 9, f, V }
+        { I_HV_MAX_P, asynFloat64, 10, f, A }
+        { I_HV_MIN_P, asynFloat64, 11, f, A }
+        { V_HV_MAX_P, asynFloat64, 12, f, V }
+        { V_HV_MIN_P, asynFloat64, 13, f, V }
         { V_HV_SETPOINT_P, asynFloat64, 14, f, V }
         { I_HV_SETPOINT_P, asynFloat64, 15, f, A }
-        { I_GUN_PER_V, asynFloat64, 16, f, A/V }
+        { I_GUN_PER_V_P, asynFloat64, 16, f, A/V }
         { TRIG_PERIOD_P, asynFloat64, 17, f, s }
         { I_HV_STANDBY_REFERENCE_P, asynFloat64, 18, f, A }
         { I_GUN_TRIG_REFERENCE_P, asynFloat64, 19, f, A }
         { DI_DT_MAX_P, asynFloat64, 20, f, A/s }
-        { I_HV_STANDBY_REFERENCE_MAX, asynFloat64, 21, f, A }
-        { I_GUN_TRIG_REFERENCE_MAX, asynFloat64, 22, f, A }
+        { I_HV_STANDBY_REFERENCE_MAX_P, asynFloat64, 21, f, A }
+        { I_GUN_TRIG_REFERENCE_MAX_P, asynFloat64, 22, f, A }
         { KP_STANDBY_P, asynFloat64, 23, f, "" }
         { KI_STANDBY_P, asynFloat64, 24, f, "" }
         { KD_STANDBY_P, asynFloat64, 25, f, "" }
@@ -39,18 +39,18 @@ pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { STANDBY_EMISSION_INTERLOCK_VAL_P, asynFloat64, 37, f, A }
         { TRIGON_EMISSION_INTERLOCK_VAL_P, asynFloat64, 38, f, A }
         { INTERLOCKS_MASK_P, asynInt32, 39, i, "" }
-        { STANDBY_TRIGGER_WARNING_TIME, asynInt32, 40, i, "" }
-        { TRIGGER_TIMEOUT_WARNING_TIME, asynInt32, 41, i, "" }
-        { I_FIL_ADC_CH, asynInt32, 42, i, "" }
-        { V_FIL_ADC_CH, asynInt32, 43, i, "" }
-        { I_HV_ADC_CH, asynInt32, 44, i, "" }
-        { V_HV_ADC_CH, asynInt32, 45, i, "" }
-        { I_GUN_ADC_CH, asynInt32, 46, i, "" }
-        { DAC1_FB_ADC_CH, asynInt32, 47, i, "" }
-        { DAC2_FB_ADC_CH, asynInt32, 48, i, "" }
-        { DAC3_FB_ADC_CH, asynInt32, 49, i, "" }
-        { DAC4_FB_ADC_CH, asynInt32, 50, i, "" }
-        { ADC_AVERAGE_SAMPLES, asynInt32, 51, i, "" }
+        { STANDBY_TRIGGER_WARNING_TIME_P, asynInt32, 40, i, "" }
+        { TRIGGER_TIMEOUT_WARNING_TIME_P, asynInt32, 41, i, "" }
+        { I_FIL_ADC_CH_P, asynInt32, 42, i, "" }
+        { V_FIL_ADC_CH_P, asynInt32, 43, i, "" }
+        { I_HV_ADC_CH_P, asynInt32, 44, i, "" }
+        { V_HV_ADC_CH_P, asynInt32, 45, i, "" }
+        { I_GUN_ADC_CH_P, asynInt32, 46, i, "" }
+        { DAC1_FB_ADC_CH_P, asynInt32, 47, i, "" }
+        { DAC2_FB_ADC_CH_P, asynInt32, 48, i, "" }
+        { DAC3_FB_ADC_CH_P, asynInt32, 49, i, "" }
+        { DAC4_FB_ADC_CH_P, asynInt32, 50, i, "" }
+        { ADC_AVERAGE_SAMPLES_P, asynInt32, 51, i, "" }
         { ADC_OFFSET0_P, asynFloat64, 52, f, V }
         { ADC_OFFSET1_P, asynFloat64, 53, f, V }
         { ADC_OFFSET2_P, asynFloat64, 54, f, V }
@@ -75,26 +75,26 @@ pattern { NAME,               DTYP,   ADDR,   TYPE,   EGU }
         { ADC_GAIN9_P, asynFloat64, 73, f, "" }
         { ADC_GAIN10_P, asynFloat64, 74, f, "" }
         { ADC_GAIN11_P, asynFloat64, 75, f, "" }
-        { I_FIL_DAC_CH, asynInt32, 76, i, "" }
-        { V_FIL_DAC_CH, asynInt32, 77, i, "" }
-        { I_HV_DAC_CH, asynInt32, 78, i, "" }
-        { V_HV_DAC_CH, asynInt32, 79, i, "" }
-        { USES_DHCP, asynInt32, 80, i, "" }
-        { IP_ADDR0, asynInt32, 81, i, "" }
-        { IP_ADDR1, asynInt32, 82, i, "" }
-        { IP_ADDR2, asynInt32, 83, i, "" }
-        { IP_ADDR3, asynInt32, 84, i, "" }
-        { GATEWAY_ADDR0, asynInt32, 85, i, "" }
-        { GATEWAY_ADDR1, asynInt32, 86, i, "" }
-        { GATEWAY_ADDR2, asynInt32, 87, i, "" }
-        { GATEWAY_ADDR3, asynInt32, 88, i, "" }
-        { DNS_SERVER_ADDR0, asynInt32, 89, i, "" }
-        { DNS_SERVER_ADDR1, asynInt32, 90, i, "" }
-        { DNS_SERVER_ADDR2, asynInt32, 91, i, "" }
-        { DNS_SERVER_ADDR3, asynInt32, 92, i, "" }
-        { NET_MASK0, asynInt32, 93, i, "" }
-        { NET_MASK1, asynInt32, 94, i, "" }
-        { NET_MASK2, asynInt32, 95, i, "" }
-        { NET_MASK3, asynInt32, 96, i, "" }
-        { DEVICE_ID, asynInt32, 97, i, "" }
+        { I_FIL_DAC_CH_P, asynInt32, 76, i, "" }
+        { V_FIL_DAC_CH_P, asynInt32, 77, i, "" }
+        { I_HV_DAC_CH_P, asynInt32, 78, i, "" }
+        { V_HV_DAC_CH_P, asynInt32, 79, i, "" }
+        { USES_DHCP_P, asynInt32, 80, i, "" }
+        { IP_ADDR0_P, asynInt32, 81, i, "" }
+        { IP_ADDR1_P, asynInt32, 82, i, "" }
+        { IP_ADDR2_P, asynInt32, 83, i, "" }
+        { IP_ADDR3_P, asynInt32, 84, i, "" }
+        { GATEWAY_ADDR0_P, asynInt32, 85, i, "" }
+        { GATEWAY_ADDR1_P, asynInt32, 86, i, "" }
+        { GATEWAY_ADDR2_P, asynInt32, 87, i, "" }
+        { GATEWAY_ADDR3_P, asynInt32, 88, i, "" }
+        { DNS_SERVER_ADDR0_P, asynInt32, 89, i, "" }
+        { DNS_SERVER_ADDR1_P, asynInt32, 90, i, "" }
+        { DNS_SERVER_ADDR2_P, asynInt32, 91, i, "" }
+        { DNS_SERVER_ADDR3_P, asynInt32, 92, i, "" }
+        { NET_MASK0_P, asynInt32, 93, i, "" }
+        { NET_MASK1_P, asynInt32, 94, i, "" }
+        { NET_MASK2_P, asynInt32, 95, i, "" }
+        { NET_MASK3_P, asynInt32, 96, i, "" }
+        { DEVICE_ID_P, asynInt32, 97, i, "" }
 

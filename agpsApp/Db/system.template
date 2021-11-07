@@ -16,7 +16,7 @@ record(mbbo, "$(SYS):setCommand") {
 
 record(mbbi, "$(SYS):getState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 1)i_register")
     field(ZRST, "OFF")          field(ZRVL, "0")
@@ -32,7 +32,7 @@ record(mbbi, "$(SYS):getState") {
 
 record(mbbi, "$(SYS):getFilamentState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 2)i_register")
     field(ZRST, "OFF")       field(ZRVL, "0")
@@ -46,7 +46,7 @@ record(mbbi, "$(SYS):getFilamentState") {
 
 record(mbbi, "$(SYS):getHVState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 3)i_register")
     field(ZRST, "OFF")       field(ZRVL, "0")
@@ -60,7 +60,7 @@ record(mbbi, "$(SYS):getHVState") {
 
 record(mbbi, "$(SYS):getRegulatorState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 4)i_register")
     field(ZRST, "OFF")          field(ZRVL, "0")
@@ -73,7 +73,7 @@ record(mbbi, "$(SYS):getRegulatorState") {
 
 record(mbbi, "$(SYS):getLoggerState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 5)i_register")
     field(ZRST, "OFF")        field(ZRVL, "0")
@@ -85,7 +85,7 @@ record(mbbi, "$(SYS):getLoggerState") {
 
 record(mbbi, "$(SYS):getSupervisorState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 7)i_register")
     field(ZRST, "ON")        field(ZRVL, "0")
@@ -95,28 +95,28 @@ record(mbbi, "$(SYS):getSupervisorState") {
 
 record(mbbiDirect, "$(SYS):getInterlocksState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORT) 10 0xFFFF)i_register")
 }
 
 record(mbbiDirect, "$(SYS):getWarningsState") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORT) 13 0x1F)i_register")
 }
 
 record(mbbiDirect, "$(SYS):getHVPSStatus") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORT) 14 0x1F)i_register")
 }
 
 record(mbbiDirect, "$(SYS):getFILPSStatus") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORT) 15 0x1F)i_register")
 }
@@ -130,10 +130,10 @@ record(longout, "$(SYS):takeControl")
 
 record(mbbi, "$(SYS):getFIRST_INTERLOCK") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn(AGPS, 10)i_register")
-    field(ZRST, "OFF")                  field(ZRVL, "0")
+    field(INP,  "@asyn(AGPS, 11)i_register")
+    field(ZRST, "EMPTY")                field(ZRVL, "0")
     field(ONST, "External Interlock")   field(ONVL, "1")
     field(TWST, "Filament Overcurrent") field(TWVL, "2")
     field(THST, "Filament OverVoltage") field(THVL, "4")
@@ -153,10 +153,10 @@ record(mbbi, "$(SYS):getFIRST_INTERLOCK") {
 
 record(mbbi, "$(SYS):getSECOND_INTERLOCK") {
     field(PINI, "YES")
-    field(SCAN, "1 second")
+    field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn(AGPS, 11)i_register")
-    field(ZRST, "OFF")                  field(ZRVL, "0")
+    field(INP,  "@asyn(AGPS, 12)i_register")
+    field(ZRST, "EMPTY")                field(ZRVL, "0")
     field(ONST, "External Interlock")   field(ONVL, "1")
     field(TWST, "Filament Overcurrent") field(TWVL, "2")
     field(THST, "Filament OverVoltage") field(THVL, "4")
@@ -173,3 +173,405 @@ record(mbbi, "$(SYS):getSECOND_INTERLOCK") {
     field(FTST, "FIL PS Fault")         field(FTVL, "16384")
     field(FFST, "Software Interlock")   field(FFVL, "32768")
 }
+record(ai, "$(SYS):getERROR") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 16)f_register")
+    field(PINI, "YES")
+    field(EGU,  "A")
+}
+
+record(ao, "$(SYS):setERROR") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 16)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "A")
+    field(FLNK, "$(SYS):getERROR")
+}
+record(ai, "$(SYS):getDRIVE_DIFF") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 17)f_register")
+    field(PINI, "YES")
+    field(EGU,  "A")
+}
+
+record(ao, "$(SYS):setDRIVE_DIFF") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 17)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "A")
+    field(FLNK, "$(SYS):getDRIVE_DIFF")
+}
+record(ai, "$(SYS):getDRIVE") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 18)f_register")
+    field(PINI, "YES")
+    field(EGU,  "A")
+}
+
+record(ao, "$(SYS):setDRIVE") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 18)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "A")
+    field(FLNK, "$(SYS):getDRIVE")
+}
+record(ai, "$(SYS):getTRIGGER_COUNT") {
+    field(DTYP, "asynInt32")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 19)i_register")
+    field(PINI, "YES")
+    field(EGU,  "")
+}
+
+record(ao, "$(SYS):setTRIGGER_COUNT") {
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 19)i_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "")
+    field(FLNK, "$(SYS):getTRIGGER_COUNT")
+}
+record(ai, "$(SYS):getGUN_SPARKS_COUNT") {
+    field(DTYP, "asynInt32")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 20)i_register")
+    field(PINI, "YES")
+    field(EGU,  "")
+}
+
+record(ao, "$(SYS):setGUN_SPARKS_COUNT") {
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 20)i_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "")
+    field(FLNK, "$(SYS):getGUN_SPARKS_COUNT")
+}
+
+record(ai, "$(SYS):getADC0") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 45)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC0") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 45)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC0")
+}
+record(ai, "$(SYS):getADC1") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 46)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC1") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 46)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC1")
+}
+record(ai, "$(SYS):getADC2") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 47)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC2") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 47)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC2")
+}
+record(ai, "$(SYS):getADC3") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 48)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC3") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 48)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC3")
+}
+record(ai, "$(SYS):getADC4") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 49)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC4") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 49)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC4")
+}
+record(ai, "$(SYS):getADC5") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 50)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC5") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 50)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC5")
+}
+record(ai, "$(SYS):getADC6") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 51)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC6") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 51)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC6")
+}
+record(ai, "$(SYS):getADC7") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 52)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC7") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 52)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC7")
+}
+record(ai, "$(SYS):getADC8") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 53)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC8") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 53)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC8")
+}
+record(ai, "$(SYS):getADC9") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 54)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC9") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 54)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC9")
+}
+record(ai, "$(SYS):getADC10") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 55)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC10") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 55)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC10")
+}
+record(ai, "$(SYS):getADC11") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 56)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setADC11") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 56)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getADC11")
+}
+record(ai, "$(SYS):getI_FIL_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 57)f_register")
+    field(PINI, "YES")
+    field(EGU,  "A")
+}
+
+record(ao, "$(SYS):setI_FIL_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 57)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "A")
+    field(FLNK, "$(SYS):getI_FIL_MEAS")
+}
+record(ai, "$(SYS):getV_FIL_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 58)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setV_FIL_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 58)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getV_FIL_MEAS")
+}
+record(ai, "$(SYS):getI_HV_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 59)f_register")
+    field(PINI, "YES")
+    field(EGU,  "S")
+}
+
+record(ao, "$(SYS):setI_HV_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 59)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "S")
+    field(FLNK, "$(SYS):getI_HV_MEAS")
+}
+record(ai, "$(SYS):getV_HV_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 60)f_register")
+    field(PINI, "YES")
+    field(EGU,  "V")
+}
+
+record(ao, "$(SYS):setV_HV_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 60)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "V")
+    field(FLNK, "$(SYS):getV_HV_MEAS")
+}
+record(ai, "$(SYS):getI_GUN_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 61)f_register")
+    field(PINI, "YES")
+    field(EGU,  "A")
+}
+
+record(ao, "$(SYS):setI_GUN_MEAS") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 61)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "A")
+    field(FLNK, "$(SYS):getI_GUN_MEAS")
+}
+record(ai, "$(SYS):getFIL_RESISTANCE") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 62)f_register")
+    field(PINI, "YES")
+    field(EGU,  "Ohm")
+}
+
+record(ao, "$(SYS):setFIL_RESISTANCE") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 62)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "Ohm")
+    field(FLNK, "$(SYS):getFIL_RESISTANCE")
+}
+record(ai, "$(SYS):gettCC_TEMPERATURE") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 66)f_register")
+    field(PINI, "YES")
+    field(EGU,  "°C")
+}
+
+record(ao, "$(SYS):settCC_TEMPERATURE") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 66)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "°C")
+    field(FLNK, "$(SYS):gettCC_TEMPERATURE")
+}
+record(ai, "$(SYS):getAGPS_TEMPERATURE") {
+    field(DTYP, "asynFloat64")
+    field(SCAN, ".2 second")
+    field(INP,  "@asyn($(PORT) 67)f_register")
+    field(PINI, "YES")
+    field(EGU,  "°C")
+}
+
+record(ao, "$(SYS):setAGPS_TEMPERATURE") {
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 67)f_register")
+    field(PINI, "NO")
+    field(SCAN, "Passive")
+    field(EGU,  "°C")
+    field(FLNK, "$(SYS):getAGPS_TEMPERATURE")
+}
+
