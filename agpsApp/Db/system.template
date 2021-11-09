@@ -89,6 +89,17 @@ record(mbbi, "$(SYS):getLoggerState") {
     field(FRST, "Undefined")  field(FRVL, "999")
 }
 
+record(mbbi, "$(SYS):getLogDumpState") {
+    field(PINI, "YES")
+    field(SCAN, ".2 second")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT), 6)i_register")
+    field(ZRST, "Waiting Connection")        field(ZRVL, "0")
+    field(ONST, "Connected")                 field(ONVL, "1")
+    field(TWST, "Dumping")                   field(TWVL, "2")
+    field(THST, "Undefined")                 field(THVL, "999")  
+}
+
 record(mbbi, "$(SYS):getSupervisorState") {
     field(PINI, "YES")
     field(SCAN, ".2 second")
