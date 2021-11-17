@@ -105,9 +105,9 @@ record(mbbi, "$(SYS):getSupervisorState") {
     field(SCAN, ".2 second")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT), 7)i_register")
-    field(ZRST, "ON")        field(ZRVL, "0")
-    field(ONST, "Interlock") field(ONVL, "20")
-    field(TWST, "Undefined") field(TWVL, "999")
+    field(ONST, "ON")        field(ONVL, "1")
+    field(TWST, "Interlock") field(TWVL, "20")
+    field(THST, "Undefined") field(THVL, "999")
 }
 
 record(mbbi, "$(SYS):getControlInterface") {
@@ -520,7 +520,7 @@ record(ai, "$(SYS):getI_HV_MEAS") {
     field(SCAN, ".2 second")
     field(INP,  "@asyn($(PORT) 59)f_register")
     field(PINI, "YES")
-    field(EGU,  "S")
+    field(EGU,  "A")
 }
 
 record(ao, "$(SYS):setI_HV_MEAS") {
@@ -528,7 +528,7 @@ record(ao, "$(SYS):setI_HV_MEAS") {
     field(OUT,  "@asyn($(PORT) 59)f_register")
     field(PINI, "NO")
     field(SCAN, "Passive")
-    field(EGU,  "S")
+    field(EGU,  "A")
     field(FLNK, "$(SYS):getI_HV_MEAS")
 }
 record(ai, "$(SYS):getV_HV_MEAS") {
